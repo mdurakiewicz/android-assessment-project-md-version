@@ -59,9 +59,15 @@ public class MovieListActivity extends AppCompatActivity implements HasSupportFr
 
             @Override
             public boolean onQueryTextChange(String newText) {
+                ListFragment listFragment = (ListFragment) getSupportFragmentManager().findFragmentByTag(ListFragment.TAG);
+                listFragment.updateQuery(newText);
                 return false;
             }
         });
+
+        ListFragment listFragment = (ListFragment) getSupportFragmentManager().findFragmentByTag(ListFragment.TAG);
+        searchView.setQuery(listFragment.getCurrentQuery(), false);
+        searchView.clearFocus();
 
         return true;
     }
