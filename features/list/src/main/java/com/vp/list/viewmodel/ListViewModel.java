@@ -44,11 +44,17 @@ public class ListViewModel extends ViewModel {
         searchService.search(title, page).enqueue(new Callback<SearchResponse>() {
             @Override
             public void onResponse(@NonNull Call<SearchResponse> call, @NonNull Response<SearchResponse> response) {
-
                 SearchResponse result = response.body();
+                int totalResult = result != null ? result.getTotalResults() : Integer.MAX_VALUE;
 
                 if (result != null) {
                     aggregatedItems.addAll(result.getSearch());
+                }
+
+                if (aggregatedItems.isEmpty()) {
+                    liveData.setValue(SearchResult.error());
+                } else {
+                    liveData.setValue(SearchResult.success(aggregatedItems, totalResult));
                 }
             }
 
