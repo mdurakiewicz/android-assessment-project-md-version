@@ -10,14 +10,18 @@ import dagger.android.support.AndroidSupportInjectionModule
 import javax.inject.Singleton
 
 @Singleton
-@Component(modules = [AndroidSupportInjectionModule::class, NetworkModule::class, MovieListActivityModule::class, DetailActivityModule::class])
+@Component(modules = [AndroidSupportInjectionModule::class,
+    NetworkModule::class,
+    MovieListActivityModule::class,
+    DetailActivityModule::class,
+    NavigatorModule::class])
 interface AppComponent {
 
     @Component.Builder
     interface Builder {
         @BindsInstance
         fun application(application: Application): Builder
-
+        fun navigatorModule(navigatorModule: NavigatorModule): Builder
         fun build(): AppComponent
     }
 

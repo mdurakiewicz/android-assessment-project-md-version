@@ -1,5 +1,8 @@
 package com.vp.detail
 
+import android.app.Activity
+import android.content.Intent
+import android.net.Uri
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
@@ -43,5 +46,14 @@ class DetailActivity : DaggerAppCompatActivity(), QueryProvider {
 
     companion object {
         lateinit var queryProvider: QueryProvider
+
+        @JvmStatic
+        fun start(activity: Activity, imdbID: String) {
+            val intent = Intent(activity, DetailActivity::class.java)
+            intent.data = Uri.Builder()
+                    .appendQueryParameter("imdbID", imdbID)
+                    .build()
+            activity.startActivity(intent)
+        }
     }
 }

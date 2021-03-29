@@ -33,6 +33,9 @@ public class ListFragment extends Fragment implements GridPagingScrollListener.L
     @Inject
     ViewModelProvider.Factory factory;
 
+    @Inject
+    DetailsNavigator detailsNavigator;
+
     private ListViewModel listViewModel;
     private GridPagingScrollListener gridPagingScrollListener;
     private ListAdapter listAdapter;
@@ -173,6 +176,6 @@ public class ListFragment extends Fragment implements GridPagingScrollListener.L
 
     @Override
     public void onItemClick(String imdbID) {
-        //TODO handle click events
+        detailsNavigator.showDetails(requireActivity(), imdbID);
     }
 }
