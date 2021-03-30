@@ -15,8 +15,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.ViewAnimator;
 
 import com.vp.list.viewmodel.SearchResult;
@@ -41,8 +41,9 @@ public class ListFragment extends Fragment implements GridPagingScrollListener.L
     private ListAdapter listAdapter;
     private ViewAnimator viewAnimator;
     private RecyclerView recyclerView;
+    private ViewGroup error;
     private ProgressBar progressBar;
-    private TextView errorTextView;
+    private Button tryAgainButton;
     private String currentQuery = "Interview";
 
     @Override
@@ -64,10 +65,12 @@ public class ListFragment extends Fragment implements GridPagingScrollListener.L
         recyclerView = view.findViewById(R.id.recyclerView);
         viewAnimator = view.findViewById(R.id.viewAnimator);
         progressBar = view.findViewById(R.id.progressBar);
-        errorTextView = view.findViewById(R.id.errorText);
+        error = view.findViewById(R.id.error);
+        tryAgainButton = view.findViewById(R.id.tryAgainButton);
 
         initBottomNavigation(view);
         initList();
+        setListeners();
         listViewModel.observeMovies().observe(this, searchResult -> {
             if (searchResult != null) {
                 handleResult(listAdapter, searchResult);
@@ -109,6 +112,13 @@ public class ListFragment extends Fragment implements GridPagingScrollListener.L
         recyclerView.addOnScrollListener(gridPagingScrollListener);
     }
 
+    private void setListeners() {
+        tryAgainButton.setOnClickListener(v -> {
+            listViewModel.searchMoviesByTitle(currentQuery, 1);
+            showProgressBar();
+        });
+    }
+
     private void showProgressBar() {
         viewAnimator.setDisplayedChild(viewAnimator.indexOfChild(progressBar));
     }
@@ -118,7 +128,7 @@ public class ListFragment extends Fragment implements GridPagingScrollListener.L
     }
 
     private void showError() {
-        viewAnimator.setDisplayedChild(viewAnimator.indexOfChild(errorTextView));
+        viewAnimator.setDisplayedChild(viewAnimator.indexOfChild(error));
     }
 
     private void handleResult(@NonNull ListAdapter listAdapter, @NonNull SearchResult searchResult) {
