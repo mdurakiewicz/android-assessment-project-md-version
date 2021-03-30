@@ -75,7 +75,10 @@ public class MovieListActivity extends AppCompatActivity implements HasSupportFr
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putBoolean(IS_SEARCH_VIEW_ICONIFIED, searchView.isIconified());
+        final SearchView searchView = this.searchView;
+        if(searchView != null) {
+            outState.putBoolean(IS_SEARCH_VIEW_ICONIFIED, searchView.isIconified());
+        }
     }
 
     @Override
