@@ -24,6 +24,7 @@ public class ListViewModel extends ViewModel {
 
     private String currentTitle = "";
     private List<ListItem> aggregatedItems = new ArrayList<>();
+    private Call<SearchResponse> currentCall;
 
     @Inject
     ListViewModel(@NonNull SearchService searchService) {
@@ -41,7 +42,8 @@ public class ListViewModel extends ViewModel {
             currentTitle = title;
             liveData.setValue(SearchResult.inProgress());
         }
-        searchService.search(title, page).enqueue(new Callback<SearchResponse>() {
+        final Call<SearchResponse> currentCall = searchService.search(title, page);
+        currentCall.enqueue(new Callback<SearchResponse>() {
             @Override
             public void onResponse(@NonNull Call<SearchResponse> call, @NonNull Response<SearchResponse> response) {
                 SearchResponse result = response.body();
@@ -63,5 +65,15 @@ public class ListViewModel extends ViewModel {
                 liveData.setValue(SearchResult.error());
             }
         });
+        this.currentCall = currentCall;
+    }
+
+    @Override
+    public void onCleared() {
+        super.onCleared();
+        final Call<SearchResponse> currentCall = this.currentCall;
+        if(currentCall != null) {
+            currentCall.cancel();
+        }
     }
 }
