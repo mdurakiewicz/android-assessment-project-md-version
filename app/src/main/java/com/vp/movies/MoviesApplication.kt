@@ -2,7 +2,6 @@ package com.vp.movies
 
 import android.app.Activity
 import android.app.Application
-import android.content.Intent
 import com.vp.detail.DetailActivity
 import com.vp.list.DetailsNavigator
 import com.vp.movies.di.DaggerAppComponent
