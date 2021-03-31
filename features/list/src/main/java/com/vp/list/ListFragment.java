@@ -34,7 +34,7 @@ public class ListFragment extends Fragment implements GridPagingScrollListener.L
     ViewModelProvider.Factory factory;
 
     @Inject
-    DetailsNavigator detailsNavigator;
+    MovieListNavigator movieListNavigator;
 
     private ListViewModel listViewModel;
     private GridPagingScrollListener gridPagingScrollListener;
@@ -186,6 +186,6 @@ public class ListFragment extends Fragment implements GridPagingScrollListener.L
 
     @Override
     public void onItemClick(String imdbID) {
-        detailsNavigator.showDetails(requireActivity(), imdbID);
+        movieListNavigator.showDetails(requireActivity(), imdbID);
     }
 }

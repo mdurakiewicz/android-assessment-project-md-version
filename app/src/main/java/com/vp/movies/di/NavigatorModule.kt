@@ -1,6 +1,7 @@
 package com.vp.movies.di
 
-import com.vp.list.DetailsNavigator
+import com.vp.favorites.FavoriteNavigator
+import com.vp.list.MovieListNavigator
 import com.vp.movies.NavigatorProvider
 import dagger.Module
 import dagger.Provides
@@ -11,8 +12,14 @@ class NavigatorModule(private val navigatorProvider: NavigatorProvider) {
 
     @Singleton
     @Provides
-    fun providesDetailsNavigator(): DetailsNavigator {
-        return navigatorProvider.provideDetailsNavigator()
+    fun providesMovieListNavigator(): MovieListNavigator {
+        return navigatorProvider.provideMovieListNavigator()
+    }
+
+    @Singleton
+    @Provides
+    fun provideFavoriteNavigator(): FavoriteNavigator {
+        return navigatorProvider.provideFavoriteNavigator()
     }
 
 }

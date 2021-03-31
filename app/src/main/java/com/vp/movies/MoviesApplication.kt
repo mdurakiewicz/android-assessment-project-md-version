@@ -3,7 +3,8 @@ package com.vp.movies
 import android.app.Activity
 import android.app.Application
 import com.vp.detail.DetailActivity
-import com.vp.list.DetailsNavigator
+import com.vp.favorites.FavoriteNavigator
+import com.vp.list.MovieListNavigator
 import com.vp.movies.di.DaggerAppComponent
 import com.vp.movies.di.NavigatorModule
 import dagger.android.DispatchingAndroidInjector
@@ -25,8 +26,14 @@ class MoviesApplication : Application(), HasActivityInjector, NavigatorProvider 
 
     override fun activityInjector(): DispatchingAndroidInjector<Activity>? = dispatchingActivityInjector
 
-    override fun provideDetailsNavigator(): DetailsNavigator {
-        return DetailsNavigator { activity, imdbID ->
+    override fun provideMovieListNavigator(): MovieListNavigator {
+        return MovieListNavigator { activity, imdbID ->
+            DetailActivity.start(activity, imdbID)
+        }
+    }
+
+    override fun provideFavoriteNavigator(): FavoriteNavigator {
+        return FavoriteNavigator { activity, imdbID ->
             DetailActivity.start(activity, imdbID)
         }
     }

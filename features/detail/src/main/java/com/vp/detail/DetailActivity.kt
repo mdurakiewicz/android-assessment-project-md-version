@@ -3,27 +3,32 @@ package com.vp.detail
 import android.app.Activity
 import android.content.Intent
 import android.net.Uri
+import android.os.Bundle
+import android.view.Menu
+import android.widget.CheckBox
+import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
-import androidx.databinding.DataBindingUtil
-import android.os.Bundle
-import android.view.Menu
 import com.vp.detail.databinding.ActivityDetailBinding
 import com.vp.detail.viewmodel.DetailsViewModel
 import dagger.android.support.DaggerAppCompatActivity
 import javax.inject.Inject
-import kotlin.run
 
 class DetailActivity : DaggerAppCompatActivity(), QueryProvider {
 
     @Inject
     lateinit var factory: ViewModelProvider.Factory
 
+    private var starCheckBox: CheckBox? = null
+    private lateinit var sharedPreferencesManager: SharedPreferencesManager
+    private lateinit var detailViewModel: DetailsViewModel
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val binding: ActivityDetailBinding = DataBindingUtil.setContentView(this, R.layout.activity_detail)
-        val detailViewModel = ViewModelProviders.of(this, factory).get(DetailsViewModel::class.java)
+        detailViewModel = ViewModelProviders.of(this, factory).get(DetailsViewModel::class.java)
+        sharedPreferencesManager = SharedPreferencesManager(this)
         binding.viewModel = detailViewModel
         queryProvider = this
         binding.setLifecycleOwner(this)
@@ -35,6 +40,17 @@ class DetailActivity : DaggerAppCompatActivity(), QueryProvider {
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.detail_menu, menu)
+        val menuItem = menu!!.findItem(R.id.star)
+        starCheckBox = menuItem.actionView as CheckBox
+
+        starCheckBox?.setOnCheckedChangeListener { buttonView, isChecked ->
+            if(isChecked){
+                sharedPreferencesManager.addFavorites(detailViewModel.details().value?.poster)
+            } else {
+                sharedPreferencesManager.removeFavorites(detailViewModel.details().value?.poster)
+            }
+        }
+
         return true
     }
 
