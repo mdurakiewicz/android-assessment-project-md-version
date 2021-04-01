@@ -30,13 +30,13 @@ class MoviesApplication : Application(), HasActivityInjector, NavigatorProvider 
 
     override fun provideMovieListNavigator(): MovieListNavigator {
         return MovieListNavigator { activity, imdbID ->
-            DetailActivity.start(activity, imdbID)
+            DetailActivity.startForResult(activity, imdbID)
         }
     }
 
     override fun provideFavoriteNavigator(): FavoriteNavigator {
-        return FavoriteNavigator { activity, imdbID ->
-            DetailActivity.start(activity, imdbID)
+        return FavoriteNavigator { activity, imdbID, requestCode ->
+            DetailActivity.startForResult(activity, imdbID, requestCode)
         }
     }
 }

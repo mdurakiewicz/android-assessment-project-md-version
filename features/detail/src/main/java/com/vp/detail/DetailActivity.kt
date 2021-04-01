@@ -86,12 +86,12 @@ class DetailActivity : DaggerAppCompatActivity(), QueryProvider {
         lateinit var queryProvider: QueryProvider
 
         @JvmStatic
-        fun start(activity: Activity, imdbID: String) {
+        fun startForResult(activity: Activity, imdbID: String, requestCode: Int = 0) {
             val intent = Intent(activity, DetailActivity::class.java)
             intent.data = Uri.Builder()
                     .appendQueryParameter("imdbID", imdbID)
                     .build()
-            activity.startActivity(intent)
+            activity.startActivityForResult(intent, requestCode)
         }
     }
 }
