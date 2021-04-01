@@ -5,7 +5,8 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.Menu
-import android.widget.CheckBox
+import android.view.MenuItem
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -25,9 +26,8 @@ class DetailActivity : DaggerAppCompatActivity(), QueryProvider {
 
     @Inject
     lateinit var sharedPreferencesManager: SharedPreferencesManager
-
-    private var starCheckBox: CheckBox? = null
     private lateinit var detailViewModel: DetailsViewModel
+    private lateinit var menuCheckbox: MenuItem
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,22 +40,40 @@ class DetailActivity : DaggerAppCompatActivity(), QueryProvider {
         detailViewModel.title().observe(this, Observer {
             supportActionBar?.title = it
         })
+        detailViewModel.details().observe(this, Observer {
+            menuCheckbox.isChecked = sharedPreferencesManager.isFavourite(it.toListItem())
+            updateItem(menuCheckbox)
+        })
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.detail_menu, menu)
-        val menuItem = menu!!.findItem(R.id.star)
-        starCheckBox = menuItem.actionView as CheckBox
-
-        starCheckBox?.setOnCheckedChangeListener { buttonView, isChecked ->
-            if(isChecked){
-                sharedPreferencesManager.addFavorite(detailViewModel.detailsData().toListItem())
-            } else {
-                sharedPreferencesManager.removeFavorite(detailViewModel.detailsData().toListItem())
-            }
-        }
-
+        menuCheckbox = menu?.findItem(R.id.star)!!
         return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        return when (item?.itemId) {
+            R.id.star -> {
+                item.isChecked = !item.isChecked
+                updateItem(item)
+                if (item.isChecked) {
+                    sharedPreferencesManager.addFavorite(detailViewModel.detailsData().toListItem())
+                } else {
+                    sharedPreferencesManager.removeFavorite(detailViewModel.detailsData().toListItem())
+                }
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    private fun updateItem(item: MenuItem) {
+        if (item.isChecked) {
+            item.icon = ContextCompat.getDrawable(this, R.drawable.ic_star_active)
+        } else {
+            item.icon = ContextCompat.getDrawable(this, R.drawable.ic_star)
+        }
     }
 
     override fun getMovieId(): String {

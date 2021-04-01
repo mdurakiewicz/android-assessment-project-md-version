@@ -39,6 +39,10 @@ class SharedPreferencesManager
         editor.putString(FAVORITES_ITEM, gson.toJson(favorites))
         editor.commit()
     }
+
+    fun isFavourite(favorite: ListItem?): Boolean {
+        return getFavorites().toMutableSet().contains(favorite)
+    }
 }
 
 inline fun <reified T> Gson.fromJson(json: String?) = if (json != null) {

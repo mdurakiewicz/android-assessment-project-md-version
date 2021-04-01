@@ -6,6 +6,6 @@
         android:id="@+id/star"
         android:icon="@drawable/ic_star"
         app:showAsAction="always"
-        app:actionViewClass="android.widget.CheckBox"
+        android:checkable="true"
         android:title="@string/favorite" />
 </menu>
