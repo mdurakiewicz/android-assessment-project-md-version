@@ -19,6 +19,8 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.ViewAnimator;
 
+import com.vp.commonaddons.GridPagingScrollListener;
+import com.vp.commonaddons.ListAdapter;
 import com.vp.list.viewmodel.SearchResult;
 import com.vp.list.viewmodel.ListViewModel;
 

@@ -1,6 +1,7 @@
 package com.vp.movies.di
 
 import android.app.Application
+import com.vp.commonaddons.di.SharePreferencesModule
 import com.vp.detail.di.DetailActivityModule
 import com.vp.favorites.di.FavoriteActivityModule
 import com.vp.list.di.MovieListActivityModule
@@ -16,7 +17,9 @@ import javax.inject.Singleton
     MovieListActivityModule::class,
     FavoriteActivityModule::class,
     DetailActivityModule::class,
-    NavigatorModule::class])
+    SharePreferencesModule::class,
+    NavigatorModule::class,
+    AppModule::class])
 interface AppComponent {
 
     @Component.Builder
@@ -24,6 +27,7 @@ interface AppComponent {
         @BindsInstance
         fun application(application: Application): Builder
         fun navigatorModule(navigatorModule: NavigatorModule): Builder
+        fun appModule(appModule: AppModule): Builder
         fun build(): AppComponent
     }
 

@@ -10,7 +10,9 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
+import com.vp.commonaddons.SharedPreferencesManager
 import com.vp.detail.databinding.ActivityDetailBinding
+import com.vp.detail.model.toListItem
 import com.vp.detail.viewmodel.DetailsViewModel
 import dagger.android.support.DaggerAppCompatActivity
 import javax.inject.Inject
@@ -20,15 +22,17 @@ class DetailActivity : DaggerAppCompatActivity(), QueryProvider {
     @Inject
     lateinit var factory: ViewModelProvider.Factory
 
+
+    @Inject
+    lateinit var sharedPreferencesManager: SharedPreferencesManager
+
     private var starCheckBox: CheckBox? = null
-    private lateinit var sharedPreferencesManager: SharedPreferencesManager
     private lateinit var detailViewModel: DetailsViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val binding: ActivityDetailBinding = DataBindingUtil.setContentView(this, R.layout.activity_detail)
         detailViewModel = ViewModelProviders.of(this, factory).get(DetailsViewModel::class.java)
-        sharedPreferencesManager = SharedPreferencesManager(this)
         binding.viewModel = detailViewModel
         queryProvider = this
         binding.setLifecycleOwner(this)
@@ -45,9 +49,9 @@ class DetailActivity : DaggerAppCompatActivity(), QueryProvider {
 
         starCheckBox?.setOnCheckedChangeListener { buttonView, isChecked ->
             if(isChecked){
-                sharedPreferencesManager.addFavorites(detailViewModel.details().value?.poster)
+                sharedPreferencesManager.addFavorite(detailViewModel.detailsData().toListItem())
             } else {
-                sharedPreferencesManager.removeFavorites(detailViewModel.details().value?.poster)
+                sharedPreferencesManager.removeFavorite(detailViewModel.detailsData().toListItem())
             }
         }
 

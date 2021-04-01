@@ -1,4 +1,4 @@
-package com.vp.favorites;
+package com.vp.commonaddons;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,7 +7,7 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.vp.favorites.model.ListItem;
+import com.vp.commonaddons.model.ListItem;
 
 import java.util.Collections;
 import java.util.List;
@@ -27,7 +27,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ListViewHolder
     @NonNull
     @Override
     public ListViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new ListViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.favourite_list, parent, false));
+        return new ListViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.common_images_list, parent, false));
     }
 
     @Override
@@ -82,7 +82,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ListViewHolder
         }
     }
 
-    interface OnItemClickListener {
+    public interface OnItemClickListener {
         void onItemClick(String imdbID);
     }
 }

@@ -3,6 +3,7 @@ package com.vp.list.model;
 import androidx.annotation.NonNull;
 
 import com.google.gson.annotations.SerializedName;
+import com.vp.commonaddons.model.ListItem;
 
 import java.util.List;
 
