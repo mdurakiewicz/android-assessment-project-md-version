@@ -27,7 +27,7 @@ class DetailActivity : DaggerAppCompatActivity(), QueryProvider {
     @Inject
     lateinit var sharedPreferencesManager: SharedPreferencesManager
     private lateinit var detailViewModel: DetailsViewModel
-    private lateinit var menuCheckbox: MenuItem
+    private var menuCheckbox: MenuItem? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,7 +41,7 @@ class DetailActivity : DaggerAppCompatActivity(), QueryProvider {
             supportActionBar?.title = it
         })
         detailViewModel.details().observe(this, Observer {
-            menuCheckbox.isChecked = sharedPreferencesManager.isFavourite(it.toListItem())
+            menuCheckbox?.isChecked = sharedPreferencesManager.isFavourite(it.toListItem())
             updateItem(menuCheckbox)
         })
     }
@@ -68,7 +68,8 @@ class DetailActivity : DaggerAppCompatActivity(), QueryProvider {
         }
     }
 
-    private fun updateItem(item: MenuItem) {
+    private fun updateItem(item: MenuItem?) {
+        item ?: return
         if (item.isChecked) {
             item.icon = ContextCompat.getDrawable(this, R.drawable.ic_star_active)
         } else {
