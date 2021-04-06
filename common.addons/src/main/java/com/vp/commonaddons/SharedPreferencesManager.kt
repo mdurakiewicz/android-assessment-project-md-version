@@ -3,7 +3,7 @@ package com.vp.commonaddons
 import android.content.Context
 import android.preference.PreferenceManager
 import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
+import com.vp.commonaddons.extension.fromJson
 import com.vp.commonaddons.model.ListItem
 import javax.inject.Inject
 
@@ -43,10 +43,4 @@ class SharedPreferencesManager
     fun isFavourite(favorite: ListItem?): Boolean {
         return getFavorites().toMutableSet().contains(favorite)
     }
-}
-
-inline fun <reified T> Gson.fromJson(json: String?) = if (json != null) {
-    fromJson<T>(json, object : TypeToken<T>() {}.type)
-} else {
-    null
 }
