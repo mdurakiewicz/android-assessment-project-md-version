@@ -37,7 +37,7 @@ class SharedPreferencesManager
     private fun saveFavorites(favorites: Set<ListItem>) {
         val editor = sharedPref.edit()
         editor.putString(FAVORITES_ITEM, gson.toJson(favorites))
-        editor.commit()
+        editor.apply()
     }
 
     fun isFavourite(favorite: ListItem?): Boolean {
